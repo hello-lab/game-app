@@ -9,6 +9,7 @@ export default function Home() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    toast.loading('Waiting...');
     const res = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -16,8 +17,12 @@ export default function Home() {
     });
 
     const data = await res.json();
+    toast.dismiss()
     console.log(data)
-    alert(data || data.error);
+    try{
+      data=='User Created' ? toast.success('User created successfully') : toast.error('User Exists');
+    }
+    catch(e){toast.error(e)}
   };
 
 

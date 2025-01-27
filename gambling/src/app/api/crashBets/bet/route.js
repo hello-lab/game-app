@@ -44,8 +44,8 @@ export async function POST(req, res) {
                 crashBetsDb.prepare('INSERT INTO crashBets (userId, betAmount, gameid) VALUES (?, ?, ?)')
                     .run(userr.username, betAmount, gameid);
 
-                
-                    const res2 = await fetch('http://localhost:3000/api/transaction', {
+                console.log(process.env.ws1);
+                    const res2 = await fetch(process.env.url +'/api/transaction', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ user: userr.username, amount: betAmount, type: 'withdraw',remarks:'Crash Bet' })

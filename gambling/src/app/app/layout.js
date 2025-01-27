@@ -31,6 +31,7 @@ export default function RootLayout({ children }) {
     const handleLinkClick = (href) => {
         setActiveLink(href);
         setTimeout(() => {setActiveLink('');}, 100);
+        setMenuOpen(!menuOpen);
         router.push(href);
     };
 
@@ -54,7 +55,7 @@ export default function RootLayout({ children }) {
                                     <li className={`ver-menu ${activeLink === '/inplay' ? 'active' : ''}`} onClick={() => handleLinkClick('/inplay')}>
                                         <a className="navbar-item hover:underline">In-Play</a>
                                     </li>
-                                    <li className={`ver-menu ${activeLink === '/app/home' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/home')}>
+                                    <li className={`ver-menu ${activeLink === '/app/multi' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/multi')}>
                                         <a className="navbar-item hover:underline">Multi Markets</a>
                                     </li>
                                     <li className={`ver-menu ${activeLink === '/app/cricket' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/cricket')}>
@@ -80,7 +81,7 @@ export default function RootLayout({ children }) {
                                     <li className={`ver-menu ${activeLink === '/app/lottery' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/lottery')}>
                                         <a className="navbar-item hover:underline">Lottery</a>
                                     </li>
-                                    <li className={`ver-menu ${activeLink === '/app/livecasino' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/livecasino')}>
+                                    <li className={`ver-menu ${activeLink === '/app/poker1' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/poker1')}>
                                         <a className="navbar-item hover:underline">Live Casino</a>
                                     </li>
                                     <li className={`ver-menu ${activeLink === '/app/virtualsports' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/virtualsports')}>

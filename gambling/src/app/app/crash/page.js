@@ -32,6 +32,7 @@ const HomePage = () => {
         fetchProfile();
     }, []);
 
+
     useEffect(() => {
         const socket = new WebSocket('ws://localhost:8080');
         setSocket(socket);
