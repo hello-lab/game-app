@@ -96,7 +96,7 @@ const [number,setNumber]=useState(99)
     let val = [...seconddropdown];
     val[index] = value;
     setseconddropdown(val);
-    setseconddropdown(val);
+   
     console.log("help",seconddropdown,value)
 
   };
@@ -149,7 +149,7 @@ const [number,setNumber]=useState(99)
   useEffect(() => {
  
     
-    const socket = new WebSocket("ws://localhost:8082");
+    const socket = new WebSocket("ws://localhost:8080?subdomain=roulette");
     setSocket(socket);
 
     socket.onopen = () => {
@@ -289,7 +289,7 @@ const [number,setNumber]=useState(99)
                     &nbsp;
                     <select
                       className="dropdown"
-                      value={secondDropdownOptions[index]}
+                      value={seconddropdown[index]}
                       onChange={(e) =>{handleSecondDropdownChange(e.target.value, index)}}
                       disabled={!isCrashed || isBetPlacedW[index]}
                       style={{ color: 'black', padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}

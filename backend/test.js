@@ -1,50 +1,75 @@
+const express = require('express');
+const WebSocket = require('ws');
+const http = require('http');
+const url = require('url');
 
+// Create an Express app
+const app = express();
 
+// Create an HTTP server that will handle WebSocket connections
+const server = http.createServer(app);
 
-function getResult(e = 2 ** 52, div = 33, g = 0.5) {
-    /**
-     * Returns a valid multiplier based on 3 inputed parameters
-     * @param {number} e - Extreme Value. Defaults to 2 ** 52.
-     * @param {number} div - Initial Crash Rate. Defaults to 33.
-     * @param {number} g - Growth Rate. Defaults to 1.
-     * @returns {number} A multiplier value based on the crash equation
-     */
-    e = Math.floor(e);
-    const h = Math.floor(Math.random() * e);
-    g = checkg(g);
-    div = checkdiv(div);
-    if (h % div === 0) {
-        return 1;
+// Initialize WebSocket server with the HTTP server
+const wss = new WebSocket.Server({ server });
+let intervalids=[]
+// Define a simple broadcast mechanism for different query parameters (subdomain)
+wss.on('connection', (ws, req) => {
+  // Extract the query parameters from the URL
+  const queryParams = url.parse(req.url, true).query;
+  const subdomain = queryParams.subdomain || 'default'; // Default to 'default' if no subdomain is provided
+  const userid = queryParams.userid
+  console.log(`Connection from subdomain: ${subdomain}`);
+
+  // Define an interval that sends a message every 10 seconds
+
+    // Send a different message based on the subdomain query parameter
+    let message = '';
+
+    if (subdomain === 'chat') {
+        const intervalId = setInterval(() => {
+      message = 'Chat subdomain: Stay connected!';
+      ws.send(JSON.stringify({ message }));
+      console.log(userid)
+        }, 1000);
+        intervalids[userid]=[intervalId]
+    } else if (subdomain === 'news') {
+        const intervalId = setInterval(() => {
+            message = 'news subdomain: Stay connected!';
+            ws.send(JSON.stringify({ message }));
+            console.log(userid)
+              }, 2000);
+              intervalids[userid]=[intervalId]
+    } else {
+        const intervalId = setInterval(() => {
+            message = 'Shit subdomain: Stay connected!';
+            ws.send(JSON.stringify({ message }));
+            console.log(userid)
+              }, 500);
+              intervalids[userid]=[intervalId]
     }
-    return 0.99 * (Math.pow(e / (e - h), 1 / g)) + 0.01;
-}
 
-// Error checking growth value (Helper Function)
-function checkg(g) {
-    g = Math.round(g * 10) / 10;
-    if (g === 0) {
-        return 1;
-    }
-    return g;
-}
-
-// Error checking multiplier value (Helper Function)
-function checkm(m) {
-    if (m < 1) {
-        return 1;
-    }
-    return Math.round(m * 100) / 100;
-}
-
-// Error checking initial fail-rate value (Helper Function)
-function checkdiv(div) {
-    if (div < 1) {
-        return 33;
-    }
-    return Math.round(div * 100) / 100;
-}
+    // Send the message to the client
 
 
+  // Listen for messages from the client
+  ws.on('message', (message) => {
+    console.log(`Received message from ${subdomain}: ${message}`);
+  });
 
+  // Handle connection close (clear the interval)
+  ws.on('close', () => {
+    console.log(`Connection closed for subdomain: ${subdomain}`);
+    
+    clearInterval(intervalids[userid][0]); // Clean up the interval when the connection closes
+  });
 
-console.log(getResult());
+  // Optionally handle errors
+  ws.on('error', (error) => {
+    console.log(`Error with WebSocket connection: ${error.message}`);
+  });
+});
+
+// Start the HTTP server to listen for requests
+server.listen(8080, () => {
+  console.log('Server is running on ws://localhost:8080');
+});

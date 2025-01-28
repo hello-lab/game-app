@@ -1,6 +1,6 @@
 import db from '../../../db/db';
 import { comparePassword, generateToken } from '../../../utils/auth';
-import cookie from 'cookie';
+import {serialize} from 'cookie';
 
 export async function GET(request) {
   return new Response(JSON.stringify({ user: 'John Doe' }), {
@@ -31,7 +31,7 @@ export  async function POST(request) {
     });
   }
   const headers = new Headers();
-  headers.append('Set-Cookie', cookie.serialize('token', generateToken(user), {
+  headers.append('Set-Cookie', serialize('token', generateToken(user), {
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 3600,

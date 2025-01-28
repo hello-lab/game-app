@@ -67,7 +67,7 @@ const HomePage = () => {
       ["back.png", "back.png", "back.png"],
     ]);
     
-    const socket = new WebSocket("ws://localhost:8081");
+    const socket = new WebSocket("ws://localhost:8080?subdomain=poker");
     setSocket(socket);
 
     socket.onopen = () => {

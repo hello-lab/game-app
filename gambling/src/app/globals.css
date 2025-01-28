@@ -284,14 +284,31 @@ align-items: flex-start;
   transition: all 0.3s ease-in-out;
 }
 
+.navbar-item{
+  display: flex
+  ;
+      flex-direction: column;
+      align-items: center;
+}
+
+.last{
+  border-top-right-radius: 2vh;
+  border-bottom-right-radius: 2vh;
+}
+.first{
+  border-top-left-radius: 2vh;
+  border-bottom-left-radius: 2vh;
+}
+
 .navbar.open {
-  display: block;
+  display: flex;
 }
 .full-wrap{
   display: flex;
   align-items: center;
 }
 .ver-menu{
+  
   padding: 5px;
   border: 3px outset violet;
   background-color: #d463df;
@@ -300,8 +317,29 @@ align-items: flex-start;
 .ver-menu.active {
   border: inset 3px violet;
 }
+.logo{
+  width: 20vw;
+    }
 
+
+.header{
+  align-items: center;
+}
 @media (max-width: 1090px) {
+  .ver-menu{
+    border-radius: 2ch;
+  }
+  .logo{
+    width: 50vw;
+height: 5vh;
+position: relative;
+left:2vw;
+  }
+header{
+  display: block;
+  flex-direction: column;
+  align-items: flex-start;
+}
   .hamburger-menu {
     display: block;
   }

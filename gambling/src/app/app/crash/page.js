@@ -34,7 +34,7 @@ const HomePage = () => {
 
 
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8080');
+        const socket = new WebSocket('ws://localhost:8080?subdomain=crash');
         setSocket(socket);
 
         socket.onopen = () => {
