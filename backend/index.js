@@ -2,15 +2,23 @@ const WebSocket = require('ws');
 const db = require('./../gambling/src/app/db/db1');
 const transactdb = require('./../gambling/src/app/db/crashBetsDb2');
 
+const { v4: uuidv4 } = require('uuid');
 let clients1 = [];
 let clients2=[]
 let clients3=[]
-
+let clients4=[]
+let clients5=[]
+let clients6=[]
 let multiplier = 1;
 let gameId = 0;
+let gameId3 = uuidv4();
+let gameid4=uuidv4()
+let gameid5=uuidv4()
 let url="http://localhost:3000"
 let port=8080
 
+
+///////////////////crash
 
 // Create table for crash game bets
 transactdb.crashBetsDb.exec(`
@@ -109,23 +117,38 @@ function startGame() {
 
 startGame();
 
-console.log('WebSocket server is running on ws://localhost:8080');
 
-const { v4: uuidv4 } = require('uuid');
-
+//////////////card funcs///////////////////
 
 let gameid = uuidv4();
-
 const deck_of_cards = [
-    "ace_of_spades.png", "2_of_spades.png", "3_of_spades.png", "4_of_spades.png", "5_of_spades.png", "6_of_spades.png", "7_of_spades.png", "8_of_spades.png", "9_of_spades.png", "10_of_spades.png", "jack_of_spades2.png", "queen_of_spades2.png", "king_of_spades2.png",
-    "ace_of_clubs.png", "2_of_clubs.png", "3_of_clubs.png", "4_of_clubs.png", "5_of_clubs.png", "6_of_clubs.png", "7_of_clubs.png", "8_of_clubs.png", "9_of_clubs.png", "10_of_clubs.png", "jack_of_clubs2.png", "queen_of_clubs2.png", "king_of_clubs2.png",
-    "ace_of_diamonds.png", "2_of_diamonds.png", "3_of_diamonds.png", "4_of_diamonds.png", "5_of_diamonds.png", "6_of_diamonds.png", "7_of_diamonds.png", "8_of_diamonds.png", "9_of_diamonds.png", "10_of_diamonds.png", "jack_of_diamonds2.png", "queen_of_diamonds2.png", "king_of_diamonds2.png",
+    "ace_of_spades.png", "2_of_spades.png", "3_of_spades.png", "4_of_spades.png", "5_of_spades.png", "6_of_spades.png", "7_of_spades.png", "8_of_spades.png", "9_of_spades.png", "10_of_spades.png", "jack_of_spades.png", "queen_of_spades.png", "king_of_spades.png",
+    "ace_of_clubs.png", "2_of_clubs.png", "3_of_clubs.png", "4_of_clubs.png", "5_of_clubs.png", "6_of_clubs.png", "7_of_clubs.png", "8_of_clubs.png", "9_of_clubs.png", "10_of_clubs.png", "jack_of_clubs.png", "queen_of_clubs.png", "king_of_clubs.png",
+    "ace_of_diamonds.png", "2_of_diamonds.png", "3_of_diamonds.png", "4_of_diamonds.png", "5_of_diamonds.png", "6_of_diamonds.png", "7_of_diamonds.png", "8_of_diamonds.png", "9_of_diamonds.png", "10_of_diamonds.png", "jack_of_diamonds.png", "queen_of_diamonds.png", "king_of_diamonds.png",
+    "ace_of_hearts.png", "2_of_hearts.png", "3_of_hearts.png", "4_of_hearts.png", "5_of_hearts.png", "6_of_hearts.png", "7_of_hearts.png", "8_of_hearts.png", "9_of_hearts.png", "10_of_hearts.png", "jack_of_hearts.png", "queen_of_hearts.png", "king_of_hearts.png"
 ];
 
 function getRandomCards(deck, num) {
     let shuffledDeck = deck.sort(() => Math.random() - 0.5);
     return shuffledDeck.slice(0, num);
 }
+
+function getJokerCard(deck) {
+    let shuffledDeck = deck.sort(() => Math.random() - 0.5);
+    return shuffledDeck[0] // Get the rank of the joker card
+}
+
+
+const sik=['spades','diamonds','hearts','clubs']
+const order = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
+
+
+function val(cards){
+    const values = cards.map(card => order.indexOf(card.split('_')[0]));
+    values.sort((a, b) => a - b);  
+    return values
+}
+
 
 function isFlush(cards) {
     const suits = cards.map(card => card.split('_')[2].split('.')[0]);
@@ -134,7 +157,9 @@ function isFlush(cards) {
 
 function isStraight(cards) {
     const order = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
-    const values = cards.map(card => order.indexOf(card.split('_')[0])).sort((a, b) => a - b);
+    const values = cards.map(card => order.indexOf(card.split('_')[0]));
+    values.sort((a, b) => a - b);  
+    
     for (let i = 0; i < values.length - 1; i++) {
         if (values[i + 1] !== values[i] + 1) {
             return false;
@@ -152,18 +177,265 @@ function countFaceCards(cards) {
     return cards.filter(card => faceCards.has(card.split('_')[0])).length;
 }
 
-function decideWinner(hands) {
+
+function isTwoOfAKind(cards) {
+    const values = cards.map(card => 13-order.indexOf(card.split('_')[0]));
+    values.sort((a, b) => a - b);  
+    console.log('tt')
+    for (let i = 0; i < values.length - 1; i++) {
+        if (values[i + 1] == values[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function isThreeOfAKind(cards) {
+    const values = cards.map(card => 13-order.indexOf(card.split('_')[0]));
+     
+    
+    for (let i = 0; i < values.length - 1; i++) {
+        if (values[i + 1] !== values[i] ) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+
+function replaceJoker(cards, joker) {
+
+    let nc=[]
+    for (let i=0;i<cards.length;i++){
+if(cards[i].split('_')[0]!=joker)
+    nc.push(cards[i])
+   
+    }
+    if (nc.length==2)
+    if(isThreeOfAKind(nc)){
+                let values = nc.map(card => (card.split('_')[2].split('.')[0]));
+                console.log(values,'tok')
+                nc.push(`${nc[0].split('_')[0]}_of_${findDisjointElements(values,sik)[order.length-values.length-1]}.png`)
+
+    }
+    else if (isStraightFlush(nc)){
+       
+        const values = nc.map(card => order.indexOf(card.split('_')[0]));
+        values.sort((a, b) => a - b);
+        
+        let k=(values[values.length - 1] + 1)
+        console.log(k,'sf')
+        let nextValue=order[k % order.length];
+        if (k==13)
+             nextValue=order[10]
+       
+        const suit = nc[0].split('_')[2];
+        nc.push(`${nextValue}_of_${suit}`);
+    }
+    else if (isStraight(nc)){
+        for(let j =0;nc.length;j++){
+            if(nc[j].split('_')[2]!=sik[j]){
+
+                const values = nc.map(card => order.indexOf(card.split('_')[0]));
+        values.sort((a, b) => a - b);
+        
+        let k=(values[values.length - 1] + 1)
+        console.log(k,'s')
+        let nextValue=order[k % order.length];
+        if (k==13)
+             nextValue=order[10]
+       
+        
+                nc.push(`${nextValue}_of_${sik[j]}.png`)
+            break}
+        }
+    }
+    else if (isFlush(nc)){
+        console.log(val(nc),'valnc')
+        if(val(nc)[0]==val(nc)[1]-2)
+        {
+            const values = nc.map(card => order.indexOf(card.split('_')[0]));
+        values.sort((a, b) => a - b);
+        
+        let k=(values[values.length - 1] + 1)
+        console.log(k,'k')
+        let nextValue=order[k % order.length];
+        if (k==13)
+             nextValue=order[10]
+       
+        const suit = nc[0].split('_')[2];
+        nc.push(`${nextValue}_of_${suit}`);
+        
+        }
+        else{
+        let values = nc.map(card => (card.split('_')[0]));
+                console.log(values,'ff')
+                nc.push(`${findDisjointElements(values,order)[order.length-values.length-1]}_of_${nc[0].split('_')[2]}`)
+}
+
+    }
+    else{
+        let values = nc.map(card => (card.split('_')[0]));
+        values.sort((a, b) => b - a);
+        const highestCard = order[values[0]];
+
+        const suit = nc[0].split('_')[2];
+        nc.push(`${findDisjointElements(values,order)[order.length-values.length-1]}_of_${suit}`);
+
+    }
+    else
+    nc=cards.map(card => (card));
+    console.log('nc',nc)
+    return(nc) 
+}
+
+function findDisjointElements(arr1, arr2) {
+    const set1 = new Set(arr1);
+    const set2 = new Set(arr2);
+
+    const disjointElements = [
+        ...arr1.filter(item => !set2.has(item)),
+        ...arr2.filter(item => !set1.has(item))
+    ];
+
+    return disjointElements;
+}
+
+
+
+
+
+function tiebreaker(hands){
+let tie=hands.map((hand => {
+    const order = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
+    const values = hand.map(card => order.indexOf(card.split('_')[0]));
+    
+    if (new Set(values).length==1)
+        return 3
+    return (Math.max(...values))
+}))
+
+console.log('tie',tie)
+return tie.indexOf(Math.max(...tie))
+}
+
+function decideWinner(hands,joker) {
+     hands=[replaceJoker(hands[0],joker),replaceJoker(hands[1],joker)]
     const handRanks = hands.map(hand => {
-        if (isStraightFlush(hand)) return 4;
-        if (isFlush(hand)) return 3;
-        if (isStraight(hand)) return 2;
-        if (countFaceCards(hand) > 0) return 1;
+        if (isThreeOfAKind(hand)) return 5;
+        else if (isStraightFlush(hand)) return 4;
+        else if (isFlush(hand)) return 2;
+        else if (isStraight(hand)) return 3;
+        else if(isTwoOfAKind(hand)) return 1
+        
         return 0;
     });
+    console.log('handranks',handRanks)
+    if (new Set(handRanks).size==1){
+        if(handRanks[0]==0||handRanks[0]==5||handRanks[0]==2||handRanks[0]==1)
+        return tiebreaker(hands)
+        else return 3
+
+    }
+    else{const maxRank = Math.max(...handRanks);
     
-    const maxRank = Math.max(...handRanks);
-    return handRanks.indexOf(maxRank);
+    return handRanks.indexOf(maxRank);}
 }
+
+
+/////////////////joker//////////////
+
+
+function broadcast3(message) {
+    clients4.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(message));
+        }
+    });
+}
+
+async function dealCards3() {
+    let chosen_cards = getRandomCards(deck_of_cards, 7);
+    let size = 3;
+    let chunked = chosen_cards.reduce((result, item, index) => {
+        if (index % size === 0) {
+            result.push([item]);
+        } else {
+            result[result.length - 1].push(item);
+        }
+        return result;
+    }, []);
+
+    const joker = chosen_cards[2];
+
+    const response = {
+        type: 'deal',
+        gameId:gameId3,
+        hands: [chunked[2],chunked[0],chunked[1]],
+        joker: joker,
+        winningHand: decideWinner(chunked, joker.split('_')[0]),
+        isFlush: [isFlush(chunked[0]), isFlush(chunked[1])],
+        isStraight: [isStraight(chunked[0]), isStraight(chunked[1])],
+        isStraightFlush: [isStraightFlush(chunked[0]), isStraightFlush(chunked[1])],
+        faceCardsCount: [countFaceCards(chunked[0]), countFaceCards(chunked[1])]
+   
+    };
+    
+    broadcast3(response);
+    let bets =  await fetch(`${url}/api/poker2/bets`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({gameid:gameId3}) })
+    bets = await bets.json()
+    console.log(bets)
+    if (bets.length!=0) 
+    for (const bet of bets) {
+        console.log(bet)
+        if (bet.type === 'W' && bet.bet === ['A',"B"][response.winningHand]) {
+            console.log('helo')
+            await fetch(`${url}/api/transaction`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 2, type: 'deposit', remarks: 'Poker2 Winnings' })
+            });
+        }
+        else if (bet.type === 'S' && bet.bet === dumdum(response.isStraight)) {
+            await fetch(`${url}/api/transaction`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 4, type: 'deposit', remarks: 'Poker2 Winnings' })
+            });
+        }
+        else if (bet.type === 'F' && bet.bet === dumdum(response.isFlush)) {
+            await fetch(`${url}/api/transaction`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 3, type: 'deposit', remarks: 'Poker2 Winnings' })
+            });
+        }
+        else if (bet.type === 'SF' && bet.bet === dumdum(response.isStraightFlush)) {
+            await fetch(`${url}/api/transaction`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 8, type: 'deposit', remarks: 'Poker2 Winnings' })
+            });
+        }
+    }
+
+    console.log(response);
+    console.log(gameId);
+    setTimeout(() => {
+        gameId3 = uuidv4();
+        broadcast3 ({ type: 'game_start', gameid:gameId3 });
+    }, 1000);
+}
+
+
+setInterval(dealCards3,15000) // Deal cards every 15 seconds
+
+/////////////normal//////////////////
 
 function broadcast1(message) {
    clients2.forEach(client => {
@@ -193,7 +465,7 @@ async function dealCards() {
         isStraight: [isStraight(chunked[0]), isStraight(chunked[1])],
         isStraightFlush: [isStraightFlush(chunked[0]), isStraightFlush(chunked[1])],
         faceCardsCount: [countFaceCards(chunked[0]), countFaceCards(chunked[1])],
-        winningHand: decideWinner(chunked)
+        winningHand: decideWinner(chunked,"joke")
     };
 
 function dumdum(d){
@@ -222,35 +494,33 @@ function dumdum(d){
             await fetch(`${url}/api/transaction`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 2, type: 'deposit', remarks: 'Poker Winnings' })
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 2, type: 'deposit', remarks: 'Poker1 Winnings' })
             });
         }
         else if (bet.type === 'S' && bet.bet === dumdum(response.isStraight)) {
             await fetch(`${url}/api/transaction`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 4, type: 'deposit', remarks: 'Poker Winnings' })
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 4, type: 'deposit', remarks: 'Poker1 Winnings' })
             });
         }
         else if (bet.type === 'F' && bet.bet === dumdum(response.isFlush)) {
             await fetch(`${url}/api/transaction`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 3, type: 'deposit', remarks: 'Poker Winnings' })
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 3, type: 'deposit', remarks: 'Poker1 Winnings' })
             });
         }
         else if (bet.type === 'SF' && bet.bet === dumdum(response.isStraightFlush)) {
             await fetch(`${url}/api/transaction`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 8, type: 'deposit', remarks: 'Poker Winnings' })
+                body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 8, type: 'deposit', remarks: 'Poker1 Winnings' })
             });
         }
     }
 
 
-    console.log(response);
-    console.log(gameid)
     setTimeout(() =>{ 
         gameid = uuidv4()
         broadcast1({ type: 'game_start', gameid })
@@ -265,7 +535,112 @@ broadcast1({ type: 'game_start', gameid });
 setInterval(dealCards, 15000); // Deal cards every 15 seconds
 
 
-
+//////////////////
+//mufli
+function broadcast4(message) {
+    clients5.forEach(client => {
+         if (client.readyState === WebSocket.OPEN) {
+             client.send(JSON.stringify(message));
+         }
+     });
+ }
+ 
+ async function dealCards4() {
+     let chosen_cards = getRandomCards(deck_of_cards, 6);
+     let size = 3;
+     let chunked = chosen_cards.reduce((result, item, index) => {
+         if (index % size === 0) {
+             result.push([item]);
+         } else {
+             result[result.length - 1].push(item);
+         }
+         return result;
+     }, []);
+       let win= decideWinner(chunked,"joke")
+       if (win==0){
+        win=1
+       }
+       else if(win==1)
+        win=0
+     const response = {
+         type: 'deal',
+         gameId: gameid,
+         hands: chunked,
+         isFlush: [isFlush(chunked[0]), isFlush(chunked[1])],
+         isStraight: [isStraight(chunked[0]), isStraight(chunked[1])],
+         isStraightFlush: [isStraightFlush(chunked[0]), isStraightFlush(chunked[1])],
+         faceCardsCount: [countFaceCards(chunked[0]), countFaceCards(chunked[1])],
+         winningHand: win
+     };
+ 
+ function dumdum(d){
+     if (d[0])
+         return "A"
+     else if (d[1])
+         return "B"
+     else
+         return "T"
+ }
+ 
+ 
+     broadcast4(response);
+ 
+     let bets =  await fetch(`${url}/api/poker3/bets`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({gameid:gameid4}) })
+     bets = await bets.json()
+     console.log(bets)
+     if (bets.length!=0) 
+     for (const bet of bets) {
+         console.log(bet)
+         if (bet.type === 'W' && bet.bet === ['A',"B"][response.winningHand]) {
+             console.log('helo')
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 2, type: 'deposit', remarks: 'Poker1 Winnings' })
+             });
+         }
+         else if (bet.type === 'S' && bet.bet === dumdum(response.isStraight)) {
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 4, type: 'deposit', remarks: 'Poker1 Winnings' })
+             });
+         }
+         else if (bet.type === 'F' && bet.bet === dumdum(response.isFlush)) {
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 3, type: 'deposit', remarks: 'Poker1 Winnings' })
+             });
+         }
+         else if (bet.type === 'SF' && bet.bet === dumdum(response.isStraightFlush)) {
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 8, type: 'deposit', remarks: 'Poker1 Winnings' })
+             });
+         }
+     }
+ 
+ 
+     setTimeout(() =>{ 
+         gameid4 = uuidv4()
+         broadcast1({ type: 'game_start', gameid:gameid4 })
+ }, 1000);
+   
+ 
+ }
+ 
+ 
+ 
+ broadcast4({ type: 'game_start', gameid:gameid4 });
+ setInterval(dealCards4, 15000); // Deal cards every 15 seconds
+ 
+ 
+ /////////////roulette//////////////
 
 let gameid2 = uuidv4();
 
@@ -431,8 +806,7 @@ try{
     }}
 
 catch(e){}
-    console.log(response);
-    console.log(gameid2)
+
     setTimeout(() =>{ 
         gameid2 = uuidv4()
         broadcast2({ type: 'game_start', gameid2 })
@@ -444,9 +818,217 @@ catch(e){}
 
 gameid2=uuidv4()
 
-setInterval(dealCards2, 30000); // Deal cards every 15 seconds
+setInterval(dealCards2, 30000); // Deal cards every 15 seconds4
 
-console.log('WebSocket server1 is running on ws://localhost:8081');
+
+/////////////////baccarat//////////
+
+const cardValues = {
+    "ace": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 0, "jack": 0, "queen": 0, "king": 0
+};
+
+function calculateHandValue(hand) {
+    return hand.reduce((sum, card) => {
+        
+        const cardValue = card.split('_')[0];
+        return (sum + cardValues[cardValue]) % 10;
+    }, 0);
+}
+
+    function baccarat(cards) {
+
+
+      
+
+        const playerHand = cards[0]
+        const bankerHand = cards[1]
+        let winner=3
+        let playerValue = calculateHandValue([playerHand[0],playerHand[1]]);
+        let pl=[playerHand[0],playerHand[1]]
+        let bankerValue = calculateHandValue([bankerHand[0],bankerHand[1]]);
+        let bl =[bankerHand[0],bankerHand[1]]
+        if ((playerValue==8||playerValue==9)||(playerValue==8||playerValue==9))
+            
+         {if (playerValue==8||playerValue==9)
+            winner=0
+        else if(playerValue==8||playerValue==9)
+            winner=1}
+        else {
+            if(playerValue<=5)
+            {playerValue=calculateHandValue(playerHand)
+                pl.push(playerHand[2])
+            }
+            if(bankerValue<=2)
+               { bankerValue=calculateHandValue(bankerHand)
+                bl.push(bankerHand[2])
+               }
+            else if(bankerValue<=2)
+                {bankerValue=calculateHandValue(bankerHand)
+                    bl.push(bankerHand[2])
+                }
+            else if(bankerValue==3)
+                {
+                    if(calculateHandValue([playerHand[2]])!=8)
+                {bankerValue=calculateHandValue(bankerHand)
+                    bl.push(bankerHand[2])
+                }
+                }
+            else if(bankerValue==4)
+                { if(findDisjointElements([calculateHandValue([playerHand[2]])],[2,3,4,5,6,7]).length==5)
+               { bankerValue=calculateHandValue(bankerHand)
+                bl.push(bankerHand[2])
+               }}
+            else if(bankerValue==5)
+               { if(findDisjointElements([calculateHandValue([playerHand[2]])],[4,5,6,7]).length==3)
+                {bl.push(bankerHand[2])
+                    bankerValue=calculateHandValue(bankerHand)}}
+            else if(bankerValue==6)
+                {if(findDisjointElements([calculateHandValue([playerHand[2]])],[6,7]).length==1)
+                {bl.push(bankerHand[2])
+                    bankerValue=calculateHandValue(bankerHand)}
+            }
+            else if(bankerValue==7)
+                {
+                }
+            else{
+                bl.push(bankerHand[2])
+
+                bankerValue=calculateHandValue(bankerHand)
+            }
+            winner=pl>bl?0:1
+
+        }
+    
+        return {
+            pl,
+            bl,
+            winner: winner
+        };
+    }
+
+
+
+
+function broadcast5(message) {
+    clients6.forEach(client => {
+         if (client.readyState === WebSocket.OPEN) {
+             client.send(JSON.stringify(message));
+         }
+     });
+ }
+ 
+ async function dealCards5() {
+     let chosen_cards = getRandomCards(deck_of_cards, 6);
+     let size = 3;
+     let chunked = chosen_cards.reduce((result, item, index) => {
+         if (index % size === 0) {
+             result.push([item]);
+         } else {
+             result[result.length - 1].push(item);
+         }
+         return result;
+     }, []);
+
+     let win = baccarat(chunked)
+     
+       
+     const response = {
+         type: 'deal',
+         gameId: gameid,
+         hands: [win.pl,win.bl],
+         isFlush: [isFlush(chunked[0]), isFlush(chunked[1])],
+         isStraight: [isStraight(chunked[0]), isStraight(chunked[1])],
+         isStraightFlush: [isStraightFlush(chunked[0]), isStraightFlush(chunked[1])],
+         faceCardsCount: [countFaceCards(chunked[0]), countFaceCards(chunked[1])],
+         winningHand: win.winner
+     };
+ 
+ function dumdum(d){
+     if (d[0])
+         return "A"
+     else if (d[1])
+         return "B"
+     else
+         return "T"
+ }
+ 
+ 
+     broadcast5(response);
+ 
+     let bets =  await fetch(`${url}/api/poker4/bets`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({gameid:gameid5}) })
+     bets = await bets.json()
+     console.log(bets)
+     if (bets.length!=0) 
+     for (const bet of bets) {
+         console.log(bet)
+         if (bet.type === 'W' && bet.bet === ['A',"B","","C"][response.winningHand]) {
+            if(bet.bet === "C") {
+                await fetch(`${url}/api/transaction`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 8, type: 'deposit', remarks: 'Baccarat Winnings' })
+                });
+            }
+            else if((bet.type === 'W' && bet.bet === "C") ){
+             console.log('helo')
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 2, type: 'deposit', remarks: 'Baccarat Winnings' })
+             });}
+         }
+         else if (bet.type === 'S' && bet.bet === dumdum(response.isStraight)) {
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 4, type: 'deposit', remarks: 'Baccarat Winnings' })
+             });
+         }
+         else if (bet.type === 'F' && bet.bet === dumdum(response.isFlush)) {
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 3, type: 'deposit', remarks: 'Baccarat Winnings' })
+             });
+         }
+         else if (bet.type === 'SF' && bet.bet === dumdum(response.isStraightFlush)) {
+             await fetch(`${url}/api/transaction`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ user: bet.userId, amount: bet.betAmount * 8, type: 'deposit', remarks: 'Baccarat Winnings' })
+             });
+         }
+     }
+ 
+ 
+     setTimeout(() =>{ 
+         gameid5 = uuidv4()
+         broadcast5({ type: 'game_start', gameid:gameid5 })
+ }, 1000);
+   
+ 
+ }
+ 
+ 
+ 
+ broadcast5({ type: 'game_start', gameid:gameid5 });
+ setInterval(dealCards5, 15000); // Deal cards every 15 seconds
+ 
+ 
+ //////////////////
+
+
+
+
+
+
+
+
+
+//////////////////////////////websocket////////////////////////////////////////////////////
 
 const express = require('express');
 
@@ -478,12 +1060,11 @@ wss.on('connection', (ws, req) => {
     let message = '';
 
     if (subdomain === 'crash') {
-        console.log('c')
       
         clients1.push( ws );
         broadcast({ type: 'game_start', gameId });
 
-    } else if (subdomain === 'poker') {
+    } else if (subdomain === 'poker1') {
         clients2.push(ws);
         broadcast1({ type: 'game_start', gameid });
         
@@ -493,7 +1074,18 @@ wss.on('connection', (ws, req) => {
         clients3.push( ws );
          broadcast2({ type: 'game_start', gameid:gameid2 });
     }
-
+    else if (subdomain  ==='poker2') {
+        clients4.push( ws );
+        broadcast3({ type: 'game_start', gameid:gameId3 });
+    }
+    else if (subdomain  ==='poker3') {
+        clients5.push( ws );
+        broadcast4({ type: 'game_start', gameid:gameid4 });
+    }
+    else if (subdomain  ==='poker4') {
+        clients6.push( ws );
+        broadcast5({ type: 'game_start', gameid:gameid5 });
+    }
     // Send the message to the client
 
   // Listen for messages from the client
@@ -509,7 +1101,6 @@ wss.on('connection', (ws, req) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token:data.token,gameid:data.gameId })
         });
-        console.log(res1);
         const data1 = await res1.json();
 
         bet=data1.bet;
@@ -541,13 +1132,21 @@ wss.on('connection', (ws, req) => {
         clients1 = clients1.filter(client => client.ws !== ws);
 
 
-    } else if (subdomain === 'poker') {
+    } else if (subdomain === 'poker1') {
         clients2 = clients2.filter(client => client.ws !== ws);
     
     } else if (subdomain  ==='roulette') {
         clients3 = clients3.filter(client => client.ws !== ws);
     }
-
+    else if (subdomain  ==='poker2') {
+        clients4 = clients4.filter(client => client.ws !== ws);
+    }
+    else if (subdomain  ==='poker3') {
+        clients5 = clients5.filter(client => client.ws !== ws);
+    }
+    else if (subdomain  ==='poker4') {
+        clients6 = clients6.filter(client => client.ws !== ws);
+    }
     console.log(`Connection closed for subdomain: ${subdomain}`);
    
   });

@@ -103,7 +103,6 @@ Home</a>
                     </header>
                     <div style={{ display: 'flex', minHeight: '100vh' }}>
                         <div style={{borderRadius:'2vh',     boxShadow:" 0 0 20px 3px #ff00ff", width: '100%', backgroundColor: '#f0f0f0', padding: '10px' }}>
-                            <img src="/banner.jpg" alt="Banner" style={{ borderRadius:'2vh', border:"inset violet",   width: '100%', marginBottom: '10px' }} />
                             {children}
                         </div>
                     </div>

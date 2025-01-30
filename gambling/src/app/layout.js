@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       
       <body
+       style={{backgroundImage:`url(/background1.png)`}}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster />

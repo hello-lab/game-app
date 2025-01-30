@@ -67,7 +67,7 @@ const HomePage = () => {
       ["back.png", "back.png", "back.png"],
     ]);
     
-    const socket = new WebSocket("ws://localhost:8080?subdomain=poker");
+    const socket = new WebSocket("ws://localhost:8080?subdomain=poker1");
     setSocket(socket);
 
     socket.onopen = () => {
@@ -297,7 +297,7 @@ const HomePage = () => {
 
           <div className="winning-hand">
             <h2>Winning Hand:</h2>
-            {["PLAYER A     ", "PLAYER B     ", "Betting Stage"][winningHand]}
+            {["PLAYER A     ", "PLAYER B     ", "Betting Stage","TIE"][winningHand]}
           </div>
         </div>
 

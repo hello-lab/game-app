@@ -40,13 +40,16 @@ const ProfilePage = () => {
 
     return (
         <div style={{color: 'black',fontSize: 'X-large'}}>
+           
             <h1 className="highlights" style={{color: 'white'}}> Profile Page</h1>
+            
             <div style={{color: 'black',fontSize: 'X-large'}}>      
                 
                 <div><span>&nbsp;Username:</span><span> {user.username}</span></div>
                 <div><span>&nbsp;Balance:</span><span> Rs {user.balance}</span></div>
             </div>
-            
+            <img src="/profile.jpg" alt="Banner" className='banner' />
+
             <div>
               <b>  <h2 >Transactions</h2></b>
                 {transactions.length > 0 ? (
@@ -66,7 +69,7 @@ const ProfilePage = () => {
                                     <td className="sl" data-label="SL No">{index + 1}</td>
                                     <td data-label="Amount">{transaction.amount}</td>
                                     <td data-label="Type">{transaction.type}</td>
-                                    <td data-label="Date">{transaction.date}</td>
+                                    <td data-label="Date">{new Date(transaction.date).toLocaleString()}</td>
                                     <td data-label="Remarks">{transaction.remarks}</td>
                                 </tr>
                             ))}

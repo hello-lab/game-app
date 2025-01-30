@@ -15,9 +15,12 @@
 }
 
 body {
+  background-size:100vw;
+  background-repeat: no-repeat;
   font-size: larger;
+  background-color: #6f3189;
   color: var(--foreground);
-  background: var(--background);
+ background-position: bottom;
   border-radius: 5px;
   min-height: 100vh; /* Ensure the body takes at least the full height of the screen */
 }
@@ -62,29 +65,56 @@ body {
 }
 
 .tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  padding: 1vh;
+  overflow-x: scroll;
+  display: flex
+;
+
   gap: 10px;
   margin-top: 20px;
+  aspect-ratio: 5vw;
+}
+
+
+main{
+  border: solid white;
+  padding: 6vh;
+  background-color: rgba(83, 47, 90, 0.589);
+  border-radius: 2vh;
+  box-shadow:0 0 9px 4px black;
+
+}
+
+
+.banner{
+  width: 100%;
+  max-height: 60vh;
+  border-radius:5vh;
+   border:inset violet;
+    margin-bottom: 10px ;
+
 }
 
 .tile {
-  box-shadow: -1px 0px 11px 1px #731d1d;
+  min-width: 35vh;
+  box-shadow: -1px 0px 11px 1px #5f0458;
   font-size: x-large;
   display: flex;
+  color: #260829;
+  font-weight: bold;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   text-align: center;
   background-color: #d463df;
-  aspect-ratio: 1;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .tile img {
-  max-width: 100%;
-  height: auto;
+  max-height: 25vh;
+  width: auto;
   border-radius: 5px;
 }
 
@@ -321,6 +351,9 @@ align-items: flex-start;
   width: 20vw;
     }
 
+.slider-container{
+
+}
 
 .header{
   align-items: center;
@@ -574,7 +607,7 @@ table.trans td:hover {
 .roulette{
   -webkit-animation-timing-function: ease-out;
   -webkit-animation-iteration-count: infinite;
-
+  
   animation-fill-mode: forwards
 }
 
