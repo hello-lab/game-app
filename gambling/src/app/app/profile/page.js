@@ -43,13 +43,13 @@ const ProfilePage = () => {
            
             <h1 className="highlights" style={{color: 'white'}}> Profile Page</h1>
             
+          <br></br>
+            <img src="/profile.jpg" alt="Banner" className='banner' />
             <div style={{color: 'black',fontSize: 'X-large'}}>      
                 
                 <div><span>&nbsp;Username:</span><span> {user.username}</span></div>
                 <div><span>&nbsp;Balance:</span><span> Rs {user.balance}</span></div>
             </div>
-            <img src="/profile.jpg" alt="Banner" className='banner' />
-
             <div>
               <b>  <h2 >Transactions</h2></b>
                 {transactions.length > 0 ? (

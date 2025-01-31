@@ -133,6 +133,8 @@ const HomePage = () => {
 
     return (
         <div >
+                              <img src="/vimaanbanner.png" alt="Banner" className='banner' />
+
             <h1 className='highlights'>Crash</h1>
             <br></br>
             <div className='par'>

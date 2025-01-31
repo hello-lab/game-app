@@ -4,7 +4,8 @@ import "./../globals.css";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Toaster } from 'react-hot-toast';
-
+import Loading from './loading'
+import { Suspense } from 'react'
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -75,23 +76,23 @@ Home</a>
                                     <li className={`ver-menu ${activeLink === '/app/soccer' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/soccer')}>
                                         <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/></g><g><g><path fill="currentColor" d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M13,5.3l1.35-0.95 c1.82,0.56,3.37,1.76,4.38,3.34l-0.39,1.34l-1.35,0.46L13,6.7V5.3z M9.65,4.35L11,5.3v1.4L7.01,9.49L5.66,9.03L5.27,7.69 C6.28,6.12,7.83,4.92,9.65,4.35z M7.08,17.11l-1.14,0.1C4.73,15.81,4,13.99,4,12c0-0.12,0.01-0.23,0.02-0.35l1-0.73L6.4,11.4 l1.46,4.34L7.08,17.11z M14.5,19.59C13.71,19.85,12.87,20,12,20s-1.71-0.15-2.5-0.41l-0.69-1.49L9.45,17h5.11l0.64,1.11 L14.5,19.59z M14.27,15H9.73l-1.35-4.02L12,8.44l3.63,2.54L14.27,15z M18.06,17.21l-1.14-0.1l-0.79-1.37l1.46-4.34l1.39-0.47 l1,0.73C19.99,11.77,20,11.88,20,12C20,13.99,19.27,15.81,18.06,17.21z"/></g></g></svg>Soccer</a>
                                     </li>
-                                    <li className={`ver-menu ${activeLink === '/app/horseracing' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/horseracing')}>
-                                        <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"><path fill="currentColor" d="M144 104a16 16 0 1 1-16-16a16 16 0 0 1 16 16m92 25.53A108.3 108.3 0 0 1 130.18 236h-2.25A107.3 107.3 0 0 1 56 208.94a12 12 0 1 1 16-17.88a81.4 81.4 0 0 0 16.2 11.26l21.54-29.62c-20.4-7-41.91-3.33-54.43-1.21a35.79 35.79 0 0 1-35.25-14.43c-.16-.21-.31-.43-.45-.65l-13.78-22A12 12 0 0 1 9.43 118L108 53.51V32a12 12 0 0 1 12-12h8a108 108 0 0 1 108 109.53m-24-.33a84 84 0 0 0-80-85.11V60a12 12 0 0 1-5.43 10l-94.16 61.61l7.31 11.68a12 12 0 0 0 11.58 4.54c16.23-2.75 49.4-8.36 79.64 8A36 36 0 0 0 164 120a12 12 0 0 1 24 0a60.09 60.09 0 0 1-53.64 59.66l-22.45 30.87a87.6 87.6 0 0 0 17.8 1.45A84.29 84.29 0 0 0 212 129.2"/></svg>Horse Racing</a>
+                                    <li className={`ver-menu ${activeLink === '/app/baccarat' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/baccarat')}>
+                                        <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"><path fill="currentColor" d="M144 104a16 16 0 1 1-16-16a16 16 0 0 1 16 16m92 25.53A108.3 108.3 0 0 1 130.18 236h-2.25A107.3 107.3 0 0 1 56 208.94a12 12 0 1 1 16-17.88a81.4 81.4 0 0 0 16.2 11.26l21.54-29.62c-20.4-7-41.91-3.33-54.43-1.21a35.79 35.79 0 0 1-35.25-14.43c-.16-.21-.31-.43-.45-.65l-13.78-22A12 12 0 0 1 9.43 118L108 53.51V32a12 12 0 0 1 12-12h8a108 108 0 0 1 108 109.53m-24-.33a84 84 0 0 0-80-85.11V60a12 12 0 0 1-5.43 10l-94.16 61.61l7.31 11.68a12 12 0 0 0 11.58 4.54c16.23-2.75 49.4-8.36 79.64 8A36 36 0 0 0 164 120a12 12 0 0 1 24 0a60.09 60.09 0 0 1-53.64 59.66l-22.45 30.87a87.6 87.6 0 0 0 17.8 1.45A84.29 84.29 0 0 0 212 129.2"/></svg>Baccarat</a>
                                     </li>
-                                    <li className={`hidden ver-menu ${activeLink === '/app/greyhoundracing' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/greyhoundracing')}>
+                                    <li className={`hidden ver-menu ${activeLink === '/app/baccarat' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/baccarat')}>
                                         <a className=" navbar-item hover:underline">Greyhound Racing</a>
                                     </li>
                                     <li hidden className={`ver-menu ${activeLink === '/app/lottery' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/lottery')}>
                                         <a className="navbar-item hover:underline">Lottery</a>
                                     </li>
-                                    <li className={`ver-menu ${activeLink === '/app/poker1' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/poker1')}>
-                                        <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 384 512"><path fill="currentColor" d="M64 512h256q27 0 45.5-18.5T384 448V64q0-27-18.5-45.5T320 0H64Q37 0 18.5 18.5T0 64v384q0 27 18.5 45.5T64 512M43 64q0-21 21-21h256q21 0 21 21v384q0 21-21 21H64q-21 0-21-21zm106 235q12 0 22-7v49h-22v22h86v-22h-22v-49q10 7 22 7q17 0 29.5-13t12.5-30t-12.5-30t-29.5-13q0-17-13-29.5T192 171t-30 12.5t-13 29.5q-17 0-29.5 13T107 256t12.5 30t29.5 13"/></svg>Live Casino</a>
+                                    <li className={`ver-menu ${activeLink === '/app/livepoker' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/livepoker')}>
+                                        <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 384 512"><path fill="currentColor" d="M64 512h256q27 0 45.5-18.5T384 448V64q0-27-18.5-45.5T320 0H64Q37 0 18.5 18.5T0 64v384q0 27 18.5 45.5T64 512M43 64q0-21 21-21h256q21 0 21 21v384q0 21-21 21H64q-21 0-21-21zm106 235q12 0 22-7v49h-22v22h86v-22h-22v-49q10 7 22 7q17 0 29.5-13t12.5-30t-12.5-30t-29.5-13q0-17-13-29.5T192 171t-30 12.5t-13 29.5q-17 0-29.5 13T107 256t12.5 30t29.5 13"/></svg>3 Card Poker</a>
                                     </li>
                                     <li className={`ver-menu ${activeLink === '/app/virtualsports' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/virtualsports')}>
                                         <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21 16.5a1 1 0 0 1-.527.881l-7.907 4.443a.996.996 0 0 1-1.132 0l-7.907-4.443A1 1 0 0 1 3 16.5v-9a1 1 0 0 1 .527-.881l7.907-4.443a.995.995 0 0 1 1.132 0l7.907 4.443A1 1 0 0 1 21 7.5v9zM5.5 14.316c-.552-.313-1-.118-1 .434s.448 1.253 1 1.566c.552.313 1 .118 1-.434s-.448-1.253-1-1.566zm0-4c-.552-.313-1-.118-1 .434s.448 1.253 1 1.566c.552.313 1 .118 1-.434s-.448-1.253-1-1.566zm4 6.264c-.552-.313-1-.118-1 .434s.448 1.253 1 1.566c.552.312 1 .118 1-.434c0-.553-.448-1.254-1-1.566zm-2-3.132c-.552-.313-1-.118-1 .434s.448 1.253 1 1.566c.552.312 1 .118 1-.434c0-.553-.448-1.254-1-1.566zm2-.868c-.552-.313-1-.119-1 .434c0 .552.448 1.253 1 1.566c.552.312 1 .118 1-.434c0-.553-.448-1.254-1-1.566zm9 1.736c-.552.313-1 1.014-1 1.566s.448.746 1 .434c.552-.313 1-1.014 1-1.566s-.448-.747-1-.434zm0-4c-.552.313-1 1.014-1 1.566s.448.747 1 .434s1-1.014 1-1.566s-.448-.747-1-.434zm-4 6.264c-.552.312-1 1.014-1 1.566s.448.746 1 .434c.552-.313 1-1.014 1-1.566s-.448-.747-1-.434zm0-4c-.552.312-1 1.014-1 1.566s.448.746 1 .434c.552-.313 1-1.014 1-1.566s-.448-.747-1-.434zm1.992-4.81c.547-.321.602-.806.124-1.082s-1.31-.24-1.856.083c-.547.322-.602.807-.124 1.083c.478.276 1.31.239 1.856-.083zm-7.425.333c.547-.322.603-.807.124-1.083c-.478-.276-1.309-.239-1.856.083c-.547.322-.602.807-.124 1.083c.478.276 1.31.24 1.856-.083zm3.713-.166c.546-.322.602-.807.124-1.083c-.479-.276-1.31-.239-1.857.083c-.546.322-.602.807-.124 1.083c.479.276 1.31.239 1.857-.083z" fill="currentColor"/></svg>Virtual Sports</a>
                                     </li>
                                     <li className={`ver-menu ${activeLink === '/app/tips' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/tips')}>
-                                        <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 17a1 1 0 0 1-2 0V5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h15c1.654 0 3-1.346 3-3V7h-2zM12 7h3v2h-3zm0 4h3v2h-3zM5 7h5v6H5zm0 10v-2h10v2z"/></svg>Tips & Previews</a>
+                                        <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 17a1 1 0 0 1-2 0V5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13a2 2 0 0 0 2 2h15c1.654 0 3-1.346 3-3V7h-2zM12 7h3v2h-3zm0 4h3v2h-3zM5 7h5v6H5zm0 10v-2h10v2z"/></svg>Tips & News</a>
                                     </li>
                                     <li className={`last ver-menu ${activeLink === '/app/profile' ? 'active' : ''}`} onClick={() => handleLinkClick('/app/profile')}>
                                         <a className="navbar-item hover:underline"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path  d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/></svg>Profile</a>
@@ -102,8 +103,11 @@ Home</a>
                     </nav>
                     </header>
                     <div style={{ display: 'flex', minHeight: '100vh' }}>
+                        
                         <div style={{borderRadius:'2vh',     boxShadow:" 0 0 20px 3px #ff00ff", width: '100%', backgroundColor: '#f0f0f0', padding: '10px' }}>
-                            {children}
+                        <Suspense fallback={<Loading/>}>
+                        {children}
+                        </Suspense>
                         </div>
                     </div>
                 </div>

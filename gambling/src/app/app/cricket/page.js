@@ -36,6 +36,8 @@ const HomePage = () => {
 
     return (
         <div>
+                              <img src="/cricketbanner.png" alt="Banner" className='banner' />
+
             <div className='highlights'>Cricket</div>
             <br></br>
            

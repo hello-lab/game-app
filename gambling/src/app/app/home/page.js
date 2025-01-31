@@ -13,7 +13,7 @@ const HomePage = () => {
     const [casinoLobby, setCasinoLobby] = useState( [
         {
           "eventId": "99.0010",
-          "eventName": "20-20 TEENPATTI",
+          "eventName": "TEENPATTI",
           "menuId": "2",
           "menuName": "Teen Patti",
           "url": "/poker.jpg",
@@ -109,11 +109,11 @@ const HomePage = () => {
         },
         {
           "eventId": "99.0002",
-          "eventName": "BACCARAT - A",
+          "eventName": "BACCARAT SUPER 6",
           "menuId": "5",
           "menuName": "Baccarat",
           "url": "/poker4.png",
-          "link": "/app/home",
+          "link": "/app/poker5",
           "popular": true,
           "sequence": 8,
           "companyName": "UNIVERSE",
@@ -218,11 +218,11 @@ const HomePage = () => {
         
         {
           "eventId": "99.0056",
-          "eventName": "29 CARD BACCARAT",
+          "eventName": "32 CARD BACCARAT",
           "menuId": "5",
           "menuName": "Baccarat",
           "url": "/poker6.jpg",
-          "link": "/app/home",
+          "link": "/app/poker6",
           "popular": true,
           "sequence": 20,
           "companyName": "UNIVERSE",
@@ -259,7 +259,7 @@ const HomePage = () => {
           "menuId": "16",
           "menuName": "Virtual",
           "url": "/coin.jpg",
-          "link": "/app/home",
+          "link": "/app/toss",
           "popular": true,
           "sequence": 21,
           "companyName": "UNIVERSE",
@@ -415,7 +415,7 @@ const HomePage = () => {
           "menuId": "2",
           "menuName": "Teen Patti",
           "url": "/dtl.jpg",
-          "link": "/app/home",
+          "link": "/app/poker8",
           "popular": true,
           "sequence": 30,
           "companyName": "UNIVERSE",
@@ -471,11 +471,11 @@ const HomePage = () => {
         },
         {
           "eventId": "99.0036",
-          "eventName": "BACCARAT - C",
+          "eventName": "BACCARAT STANDARD 6",
           "menuId": "5",
           "menuName": "Baccarat",
           "url": "/poker5.jpg",
-          "link": "/app/home",
+          "link": "/app/poker7",
           "popular": true,
           "sequence": 38,
           "companyName": "UNIVERSE",
@@ -568,7 +568,7 @@ const HomePage = () => {
         <div className='highlights'>Baccarat</div>
         <div className='tiles'>
           {casinoLobby.filter(item => item.menuName.toLowerCase() === 'baccarat').map((item, index) => (
-            <div key={index} onClick={() => handleLinkClick(item.link)} className='tile'>
+            <div  key={index} onClick={() => handleLinkClick(item.link)} className={`tile ${item.link=='/app/home'?'disabled':''}`}>
              <img  src= {item.url}  /> <span>{item.eventName}</span>
             </div>
           ))}
@@ -581,7 +581,7 @@ const HomePage = () => {
         <div className='highlights'>3 Card Poker</div>
         <div className='tiles'>
           {casinoLobby.filter(item => item.menuName.toLowerCase() === 'teen patti').map((item, index) => (
-            <div key={index} onClick={() => handleLinkClick(item.link)} className='tile'>
+            <div  key={index} onClick={() => handleLinkClick(item.link)} className={`tile ${item.link=='/app/home'?'disabled':''}`}>
             <img  src= {item.url}  /> <span>{item.eventName}</span>
            </div>
           ))}
@@ -593,7 +593,7 @@ const HomePage = () => {
         <div className='highlights'>Virtual Sports</div>
         <div className='tiles'>
           {casinoLobby.filter(item => item.menuName.toLowerCase() === 'virtual').map((item, index) => (
-            <div key={index} onClick={() => handleLinkClick(item.link)} className='tile'>
+            <div  key={index} onClick={() => handleLinkClick(item.link)} className={`tile ${item.link=='/app/home'?'disabled':''}`}>
             <img  src= {item.url}  /> <span>{item.eventName}</span>
            </div>
           ))}
@@ -602,10 +602,10 @@ const HomePage = () => {
           <br></br>
           <br></br>
           <div className='casinos'>
-        <div className='highlights'>Virtual Sports</div>
+        <div className='highlights'>Others</div>
         <div className='tiles'>
           {casinoLobby.filter(item => item.menuName.toLowerCase() === 'other').map((item, index) => (
-            <div key={index} onClick={() => handleLinkClick(item.link)} className='tile'>
+            <div  key={index} onClick={() => handleLinkClick(item.link)} className={`tile ${item.link=='/app/home'?'disabled':''}`}>
             <img  src= {item.url}  /> <span>{item.eventName}</span>
            </div>
           ))}

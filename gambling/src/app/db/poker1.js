@@ -51,4 +51,17 @@ poker1.exec(`
   )
 `);
 
+poker1.exec(`
+  CREATE TABLE IF NOT EXISTS poker5 (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    gameid TEXT,
+    userId TEXT,
+    betAmount INTEGER,
+    bet TEXT,
+    type TEXT
+   
+  )
+`);
+
+
 export default poker1;

@@ -237,7 +237,7 @@ const [number,setNumber]=useState(99)
 
   return (
     <div>
-                  <img src="/roulette1.png" alt="Banner" className='banner' />
+                  <img src="/roulettebanner.png" alt="Banner" className='banner' />
 
       <h1 className="highlights">Roulette</h1>
       <br></br>
