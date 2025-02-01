@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-
+import PacmanLoader from "react-spinners/PacmanLoader";
 const HomePage = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [articles, setArticles] = useState([]);
@@ -13,8 +13,14 @@ const HomePage = () => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
-  useEffect(() => {
-    fetch(`https://newsapi.org/v2/everything?q=${selectedCategory}&apiKey=300cb1dbe3dc4d2fbc0f94cacced2c55`)
+  useEffect(  () => {
+
+      fetch("/api/news", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: `https://newsapi.org/v2/everything?q=${selectedCategory}&apiKey=300cb1dbe3dc4d2fbc0f94cacced2c55` }),
+      })
+    
       .then(response => response.json())
       .then(data => {
         setArticles(data.articles);
@@ -45,6 +51,14 @@ const HomePage = () => {
         <div onClick={() => filterArticles('casino')} className={selectedCategory === 'casino' ? 'active' : ''}>Casino</div>
       </div>
       <div className='post-cards'>
+        {!filteredArticles.length &&
+    <div className="spinner-container">
+      <PacmanLoader color="#994bb1" />
+      <span>Loading</span>
+    </div>
+  
+}
+
         {filteredArticles.map((article, index) => (
           <div key={index} className='post-card' onClick={() => handleArticleClick(article)}>
             <img src={article.urlToImage} alt={article.title} className='post-card-image' />
