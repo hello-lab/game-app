@@ -57,7 +57,7 @@ export default function Home() {
          
           
           style={{ width: '100%', height: 'auto',borderRadius:'5px' }}
-          priority
+          priorty="true"
         />
         <ol className="list-inside list-decimal text-sm text-center font-[family-name:var(--font-geist-mono)]">
           {/* ...existing code... */}

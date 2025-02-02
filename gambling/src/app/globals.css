@@ -24,6 +24,17 @@ body {
   border-radius: 5px;
   min-height: 100vh; /* Ensure the body takes at least the full height of the screen */
 }
+
+.body {
+  background-size:100vw;
+  background-repeat: no-repeat;
+  font-size: larger;
+  background-color: #6f3189;
+  color: var(--foreground);
+ background-position: bottom;
+  border-radius: 5px;
+  min-height: 100vh; /* Ensure the body takes at least the full height of the screen */
+}
 .disabled{
   filter: grayscale(1);
 
@@ -44,10 +55,89 @@ body {
 }
 
 
+.card1{
+  border: solid white;
+  border-radius: 2px;
+  background-color: gainsboro;
+  outline: 2px solid transparent;
+  display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+.cards{
+  transform: translate(-2.5rem, -6rem);
+}
+
+.cardd1, .cardd2, .cardd3,.cardd4{
+  position: absolute;
+ height: 20rem;
+ 
+}
+.cardd1 {
+  
+ z-index: 1;
+ animation: rott 1s infinite alternate  ease-in-out  ;
+
+}
+.cardd2{
+  z-index: 2;
+  animation: rott2 1s infinite alternate  ease-in-out  ;
+
+}
+
+.cardd3 {
+ z-index: 3;
+ animation: rott4 1s infinite alternate  ease-in-out  ;
+}
+.cardd4{
+  z-index: 4;
+ animation: rott3 1s infinite alternate  ease-in-out  ;
+
+ 
+}
+
+
+@keyframes rott {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(-30deg);
+  }
+}
+@keyframes rott2 {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(-10deg);
+  }
+}
+@keyframes rott3 {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(30deg);
+  }
+}
+@keyframes rott4 {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(10deg);
+  }
+}
+
+
+
 .spinner-container{
   height: 100vh;
   display: flex
 ;
+flex-direction: column;
   justify-content: center;
   align-items: center;
   

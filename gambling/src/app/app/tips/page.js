@@ -1,5 +1,5 @@
 'use client'
-
+import Loading from '../loading';
 import { useEffect, useState } from 'react';
 import PacmanLoader from "react-spinners/PacmanLoader";
 const HomePage = () => {
@@ -52,10 +52,7 @@ const HomePage = () => {
       </div>
       <div className='post-cards'>
         {!filteredArticles.length &&
-    <div className="spinner-container">
-      <PacmanLoader color="#994bb1" />
-      <span>Loading</span>
-    </div>
+   <Loading/>
   
 }
 
