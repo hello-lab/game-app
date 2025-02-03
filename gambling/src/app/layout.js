@@ -15,8 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-
 export default function RootLayout({ children }) {
   const [load, setLoad] = useState(false);
 
@@ -28,29 +26,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <head>
-    <meta charSet="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="title" content="Chibi Games"/>
-    <meta name="description" content="Chibi Games is a secure and exciting online betting platform featuring casino games, live dealers, and fast payouts."/>
-    <meta name="keywords" content="online betting,  casino games, live dealer, esports betting,  fast payouts, secure gaming, mobile betting, cute"/>
-    <meta name="author" content="Chibi Games Team"/>
-    <meta name="robots" content="index, follow"/>
-    <meta name="language" content="English"/>
-    <meta name="revisit-after" content="7 days"/>
-    
-    <meta property="og:title" content="Chibi Games – Online Betting Platform"/>
-    <meta property="og:description" content="Join Chibi Games for an exhilarating online betting experience. Play casino games, and enjoy live dealers with fast payouts."/>
-    <meta property="og:image" content="https://game.niyogi.hackclub.app/logo.png"/>
-    <meta property="og:type" content="website"/>
-
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="Chibi Games – Online Betting Platform"/>
-    <meta name="twitter:description" content="Experience online betting like never before with Chibi Games. Play, win, and withdraw instantly."/>
-    <meta name="twitter:image" content="https://game.niyogi.hackclub.app/logo.png"/>
-
-    <title>Chibi Games – Cutest Betting Platform</title>
-</head>
+      
       <body
        
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

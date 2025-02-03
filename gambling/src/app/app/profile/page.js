@@ -50,6 +50,13 @@ const ProfilePage = () => {
                 <div><span>&nbsp;Username:</span><span> {user.username}</span></div>
                 <div><span>&nbsp;Balance:</span><span> Rs {user.balance}</span></div>
             </div>
+            <button onClick={async () => {
+               
+                document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                window.location.href = '/'; // Redirect to login page after logout
+            }} style={{ marginTop: '20px', padding: '10px 20px', fontSize: 'large' }}>
+                Logout
+            </button>
             <div>
               <b>  <h2 >Transactions</h2></b>
                 {transactions.length > 0 ? (
